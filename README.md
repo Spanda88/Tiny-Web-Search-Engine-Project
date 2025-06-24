@@ -1,11 +1,19 @@
 # Tiny-Web-Search-Engine-Project
+This is a JavaScript implementation of a tiny web search engine
+
 ## Objectives
 Create a search engine that contains: 
 - Search index
 - Search algorithm
 
-Functionality:
+Features:
 - Add new web pages to knowledge base
 - Update info as web pages are updated (accuracy)
 - Remove outdated / irrelevant web pages (concise)
 - Keyword searches
+
+Scripts:
+- `npm test` — run tests using Jest
+
+Author:
+Shefali Panda

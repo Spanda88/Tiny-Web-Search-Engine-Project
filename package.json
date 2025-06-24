@@ -1,0 +1,29 @@
+{
+  "name": "tiny-web-search-engine",
+  "version": "1.0.0",
+  "description": "A tiny web search engine project (Part A: Search Index & Algorithm)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Spanda88/Tiny-Web-Search-Engine-Project.git"
+  },
+  "keywords": [
+    "search-engine",
+    "cli",
+    "index",
+    "javascript"
+  ],
+  "author": "Shefali Panda",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "bugs": {
+    "url": "https://github.com/Spanda88/Tiny-Web-Search-Engine-Project/issues"
+  },
+  "homepage": "https://github.com/Spanda88/Tiny-Web-Search-Engine-Project#readme"
+}
