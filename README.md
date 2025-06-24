@@ -15,5 +15,5 @@ Features:
 Scripts:
 - `npm test` — run tests using Jest
 
-Author:
-Shefali Panda
+
+### Author: Shefali Panda
