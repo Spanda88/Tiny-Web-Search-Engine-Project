@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/Spanda88/Tiny-Web-Search-Engine-Project/issues"
   },
-  "homepage": "https://github.com/Spanda88/Tiny-Web-Search-Engine-Project#readme"
+  "homepage": "https://github.com/Spanda88/Tiny-Web-Search-Engine-Project#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
