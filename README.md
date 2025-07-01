@@ -10,7 +10,7 @@ Features:
 - Add new web pages to knowledge base
 - Update info as web pages are updated (accuracy)
 - Remove outdated / irrelevant web pages (concise)
-- Keyword searches
+- Keyword searches (can handle different types of queries - covering single keywords, multiple keywords, and phrases)
 
 Scripts:
 - `npm test` — run tests using Jest
