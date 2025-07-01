@@ -1,5 +1,8 @@
 function createIndex() {
-  return new Map();
+  return {
+    keywordMap: new Map(), // keyword -> Set of URLs
+    urlContentMap: new Map(), // url -> { content, title (optional) }
+  };
 }
 
 function extractKeywords(pageContent) {
@@ -11,34 +14,83 @@ function extractKeywords(pageContent) {
     .filter(word => word && !stopWords.has(word));
 }
 
-function addPageToIndex(index, url, pageContent) {
+function addPageToIndex(index, url, pageContent, title = '') {
   const keywords = extractKeywords(pageContent);
   for (const keyword of keywords) {
-    if (!index.has(keyword)) {
-      index.set(keyword, new Set());
+    if (!index.keywordMap.has(keyword)) {
+      index.keywordMap.set(keyword, new Set());
     }
-    index.get(keyword).add(url);
+    index.keywordMap.get(keyword).add(url);
   }
+  index.urlContentMap.set(url, { content: pageContent, title });
 }
 
 function removePageFromIndex(index, url) {
-  for (const [keyword, urls] of index) {
+  for (const [keyword, urls] of index.keywordMap) {
     urls.delete(url);
     if (urls.size === 0) {
-      index.delete(keyword);
+      index.keywordMap.delete(keyword);
     }
   }
+  index.urlContentMap.delete(url);
 }
 
-function updatePageInIndex(index, url, newPageContent) {
+function updatePageInIndex(index, url, newPageContent, newTitle = '') {
   removePageFromIndex(index, url);
-  addPageToIndex(index, url, newPageContent);
+  addPageToIndex(index, url, newPageContent, newTitle);
 }
 
 function getPagesForKeyword(index, keyword) {
-  return index.has(keyword.toLowerCase())
-    ? Array.from(index.get(keyword.toLowerCase()))
+  return index.keywordMap.has(keyword.toLowerCase())
+    ? Array.from(index.keywordMap.get(keyword.toLowerCase()))
     : [];
+}
+
+// --- TF-IDF helpers ---
+function computeTF(keyword, text) {
+  const words = text.toLowerCase().split(/\W+/).filter(Boolean);
+  if (words.length === 0) return 0;
+  const count = words.filter(w => w === keyword).length;
+  return count / words.length;
+}
+
+function computeIDF(index, keyword) {
+  const N = index.urlContentMap.size;
+  let docCount = 0;
+  for (const { content } of index.urlContentMap.values()) {
+    const words = content.toLowerCase().split(/\W+/).filter(Boolean);
+    if (words.includes(keyword)) docCount++;
+  }
+  if (docCount === 0) return 0;
+  return Math.log(N / docCount);
+}
+
+// --- Ranking Algorithm with TF-IDF ---
+function rankSearchResults(index, query, searchResults) {
+  const keywords = extractKeywords(query);
+  // Precompute IDF for each keyword
+  const idfMap = {};
+  for (const kw of keywords) {
+    idfMap[kw] = computeIDF(index, kw);
+  }
+  function relevanceScore(url) {
+    const page = index.urlContentMap.get(url);
+    if (!page) return 0;
+    let score = 0;
+    for (const kw of keywords) {
+      // TF in content
+      const tf = computeTF(kw, page.content);
+      const idf = idfMap[kw];
+      let tfidf = tf * idf;
+      // Boost if keyword is in title
+      if (page.title && page.title.toLowerCase().split(/\W+/).includes(kw)) {
+        tfidf *= 2; // Title boost factor
+      }
+      score += tfidf;
+    }
+    return score;
+  }
+  return [...searchResults].sort((a, b) => relevanceScore(b) - relevanceScore(a));
 }
 
 /**
@@ -47,7 +99,7 @@ function getPagesForKeyword(index, keyword) {
  * - Multiple keywords (space-separated): 'cat dog' (AND by default)
  * - Phrase (quoted): '"cat dog"'
  *
- * @param {Map} index - The search index
+ * @param {Object} index - The search index
  * @param {string} query - The user query
  * @param {Object} [options] - Options: { mode: 'AND' | 'OR' }
  * @returns {string[]} - Ranked list of URLs
@@ -69,7 +121,7 @@ function searchIndex(index, query, options = { mode: 'AND' }) {
   if (keywords.length === 0) return [];
 
   // Gather sets of URLs for each keyword
-  const urlSets = keywords.map(kw => index.has(kw) ? index.get(kw) : new Set());
+  const urlSets = keywords.map(kw => index.keywordMap.has(kw) ? index.keywordMap.get(kw) : new Set());
 
   let resultUrls;
   if (options.mode === 'OR') {
@@ -84,20 +136,8 @@ function searchIndex(index, query, options = { mode: 'AND' }) {
     }, null) || new Set();
   }
 
-  // If phrase, filter URLs to those whose content contains the phrase
-  // (Assumes you have a way to get content by URL; here we skip this for now)
-  // For now, just return the intersection/union result
-
-  // Rank by number of matching keywords (for OR mode)
-  let ranked = Array.from(resultUrls);
-  if (options.mode === 'OR' && keywords.length > 1) {
-    ranked.sort((a, b) => {
-      const aCount = keywords.filter(kw => index.has(kw) && index.get(kw).has(a)).length;
-      const bCount = keywords.filter(kw => index.has(kw) && index.get(kw).has(b)).length;
-      return bCount - aCount;
-    });
-  }
-  return ranked;
+  // Rank results using the new ranking algorithm
+  return rankSearchResults(index, query, Array.from(resultUrls));
 }
 
 module.exports = {
@@ -107,5 +147,6 @@ module.exports = {
   updatePageInIndex,
   getPagesForKeyword,
   extractKeywords,
-  searchIndex
+  searchIndex,
+  rankSearchResults
 };

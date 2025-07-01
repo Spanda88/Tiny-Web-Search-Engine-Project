@@ -36,7 +36,10 @@ app.get('/', (req, res) => {
 
 app.post('/add', (req, res) => {
   const { url, content } = req.body;
-  addPageToIndex(index, url, content);
+  // For demo: treat first word as title, rest as content
+  const [title, ...bodyArr] = content.split(' ');
+  const body = bodyArr.join(' ');
+  addPageToIndex(index, url, body, title);
   res.send(`<p>Added page: ${url}</p><a href="/">Back</a>`);
 });
 
