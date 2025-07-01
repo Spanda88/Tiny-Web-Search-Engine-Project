@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const {
   createIndex,
   addPageToIndex,
-  getPagesForKeyword
+  getPagesForKeyword,
+  searchIndex
 } = require('./searchIndex');
 
 const app = express();
@@ -23,7 +24,11 @@ app.get('/', (req, res) => {
     </form>
     <form method="GET" action="/search">
       <h3>Search</h3>
-      Keyword: <input name="keyword" required /><br>
+      Query: <input name="keyword" required /><br>
+      Mode: <select name="mode">
+        <option value="AND">AND (all keywords)</option>
+        <option value="OR">OR (any keyword)</option>
+      </select><br>
       <button type="submit">Search</button>
     </form>
   `);
@@ -37,9 +42,10 @@ app.post('/add', (req, res) => {
 
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword;
-  const results = getPagesForKeyword(index, keyword);
+  const mode = req.query.mode || 'AND';
+  const results = searchIndex(index, keyword, { mode });
   res.send(`
-    <h1>Search Results for "${keyword}"</h1>
+    <h1>Search Results for "${keyword}" (${mode})</h1>
     <ul>
       ${results.map(url => `<li>${url}</li>`).join('')}
     </ul>
