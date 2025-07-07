@@ -20,14 +20,20 @@
   "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "jest-fetch-mock": "^3.0.3"
   },
   "bugs": {
     "url": "https://github.com/Spanda88/Tiny-Web-Search-Engine-Project/issues"
   },
   "homepage": "https://github.com/Spanda88/Tiny-Web-Search-Engine-Project#readme",
   "dependencies": {
+    "cheerio": "^1.1.0",
     "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
     "pdf-parse": "^1.1.1"
+  },
+  "jest": {
+  "setupFiles": ["<rootDir>/jest.setup.js"]
   }
 }
