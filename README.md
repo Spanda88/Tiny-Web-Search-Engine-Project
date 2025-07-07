@@ -13,7 +13,7 @@ Features:
 - Remove outdated / irrelevant web pages (concise)
 - Keyword searches (can handle different types of queries - covering single keywords, multiple keywords, and phrases)
 - Orders searches based on relevance
-- Considers keyword frequency and location when determining relevance
+- Determining Relevance: Considers keyword frequency / location, weighted scoring, and Term Frequency-Inverse Document Frequency (TF-IDF)
 - Considers page's popularity or authority in the future
 
 Scripts:
