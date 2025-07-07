@@ -7,6 +7,7 @@ Create a search engine that contains:
 - Search algorithm
 - Ranking algorithm
 - Spider / web crawler
+- Command Line Interface (CLI)
 
 Features:
 - Add new web pages to knowledge base
@@ -17,6 +18,7 @@ Features:
 - Determining Relevance: Considers keyword frequency / location, weighted scoring, and Term Frequency-Inverse Document Frequency (TF-IDF)
 - Considers page's popularity or authority in the future
 - Search Engine: auto-discovers / indexes new web pages, respect website rules / avoid overloading their servers, follow links within the web pages to discover more content
+- CLI: simple UI to interact with search engine, enter queries, and view results
 
 Test Scripts:
 - `npm test`: run tests using Jest
