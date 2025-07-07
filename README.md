@@ -22,8 +22,40 @@ Features:
 - CLI: interact with search engine, enter queries, and view results within the terminal
 - UI: simple interface that allows user to access all features listed above through a webpage
 
-Test Scripts:
-- `npm test`: run tests using Jest
+## Technologies Used
 
+- **Backend**: Node.js, Express.js
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Search Algorithm**: TF-IDF with custom ranking
+- **Styling**: Modern CSS with gradients and animations
+- **Testing**: Jest
+
+## How to Use
+
+1. **Start the Backend Server** (from the root directory):
+   ```bash
+   npm run server
+   ```
+
+2. **Start the Frontend** (from the root directory):
+   ```bash
+   npm run client
+   ```
+
+3. **Or run both simultaneously**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Access the Application**:
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:3001
+
+## API Endpoints
+
+The backend provides these REST API endpoints:
+- `GET /api/search?query=<query>&mode=<AND|OR>` - Search the index
+- `POST /api/add-page` - Add a new page to the index
+- `GET /api/stats` - Get index statistics 
 
 ### Author: Shefali Panda
