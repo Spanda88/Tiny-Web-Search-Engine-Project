@@ -6,6 +6,7 @@ Create a search engine that contains:
 - Search index
 - Search algorithm
 - Ranking algorithm
+- Spider / web crawler
 
 Features:
 - Add new web pages to knowledge base
@@ -15,9 +16,10 @@ Features:
 - Orders searches based on relevance
 - Determining Relevance: Considers keyword frequency / location, weighted scoring, and Term Frequency-Inverse Document Frequency (TF-IDF)
 - Considers page's popularity or authority in the future
+- Search Engine: auto-discovers / indexes new web pages, respect website rules / avoid overloading their servers, follow links within the web pages to discover more content
 
-Scripts:
-- `npm test` — run tests using Jest
+Test Scripts:
+- `npm test`: run tests using Jest
 
 
 ### Author: Shefali Panda
