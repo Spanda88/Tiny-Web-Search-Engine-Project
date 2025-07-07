@@ -8,6 +8,7 @@ Create a search engine that contains:
 - Ranking algorithm
 - Spider / web crawler
 - Command Line Interface (CLI)
+- Frontend UI
 
 Features:
 - Add new web pages to knowledge base
@@ -18,7 +19,8 @@ Features:
 - Determining Relevance: Considers keyword frequency / location, weighted scoring, and Term Frequency-Inverse Document Frequency (TF-IDF)
 - Considers page's popularity or authority in the future
 - Search Engine: auto-discovers / indexes new web pages, respect website rules / avoid overloading their servers, follow links within the web pages to discover more content
-- CLI: simple UI to interact with search engine, enter queries, and view results
+- CLI: interact with search engine, enter queries, and view results within the terminal
+- UI: simple interface that allows user to access all features listed above through a webpage
 
 Test Scripts:
 - `npm test`: run tests using Jest
